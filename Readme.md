@@ -125,7 +125,7 @@ Triggered when:
   "messages": [...conversation history...],
   "role": "software engineer"
 }
-
+```
 
 #  Data Flow
 Frontend → Backend:
