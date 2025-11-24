@@ -1,0 +1,203 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+body {
+    background-color: #0d1117;
+    color: #e5e7eb;
+    display: flex;
+    justify-content: center;
+    padding: 16px;
+}
+
+.app {
+    width: 100%;
+    max-width: 900px;
+    background-color: #161b22;
+    border: 2px solid #3B82F6;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.app-header {
+    border-bottom: 1px solid #21262d;
+    padding-bottom: 8px;
+}
+
+.app-header h1 {
+    font-size: 1.5rem;
+}
+
+.app-header p {
+    font-size: 0.9rem;
+    color: #9ca3af;
+    margin-top: 4px;
+}
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid #21262d;
+    padding-bottom: 12px;
+}
+
+.toolbar label {
+    font-size: 0.9rem;
+    color: #d1d5db;
+}
+
+#role-select {
+    background-color: #0d1117;
+    color: #e5e7eb;
+    border: 1px solid #3B82F6;
+    padding: 6px 8px;
+    font-size: 0.9rem;
+    outline: none;
+}
+
+.buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+button {
+    border: none;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-color: #3B82F6;
+    color: #f9fafb;
+    border-radius: 0;
+    text-transform: none;
+}
+
+button.secondary {
+    background-color: #111827;
+    border: 1px solid #3B82F6;
+}
+
+button:hover {
+    filter: brightness(1.1);
+}
+
+.mic-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+    border-bottom: 1px solid #21262d;
+    padding-bottom: 8px;
+}
+
+.mic-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.mic-indicator {
+    width: 10px;
+    height: 18px;
+    background-color: #4b5563;
+}
+
+.mic-indicator.listening {
+    background-color: #3B82F6;
+    animation: micPulse 0.7s infinite;
+}
+
+.mic-indicator.agent-speaking {
+    background-color: #22c55e;
+    animation: agentPulse 1s infinite;
+}
+
+.hint {
+    font-size: 0.8rem;
+    color: #9ca3af;
+}
+
+@keyframes micPulse {
+    0% { transform: scaleY(0.7); opacity: 0.6; }
+    50% { transform: scaleY(1.3); opacity: 1; }
+    100% { transform: scaleY(0.7); opacity: 0.6; }
+}
+
+@keyframes agentPulse {
+    0% { transform: scaleY(0.9); opacity: 0.7; }
+    50% { transform: scaleY(1.1); opacity: 1; }
+    100% { transform: scaleY(0.9); opacity: 0.7; }
+}
+
+.main-panel {
+    margin-top: 12px;
+    min-height: 200px;
+}
+
+.captions-box {
+    border: 1px solid #3B82F6;
+    background-color: #0d1117;
+    padding: 12px;
+    min-height: 72px;
+    font-size: 1rem;
+    opacity: 0;
+    transform: translateY(0);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+/* Responsive layout */
+@media (max-width: 640px) {
+    .app {
+        padding: 12px;
+    }
+    .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .buttons {
+        width: 100%;
+    }
+    .buttons button {
+        flex: 1;
+    }
+}
+
+.feedback-panel {
+    margin-top: 10px;
+    border-top: 1px solid #21262d;
+    padding-top: 8px;
+}
+
+.feedback-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.feedback-header h2 {
+    font-size: 1rem;
+    color: #e5e7eb;
+}
+
+.feedback-header .small {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+}
+
+.feedback-body {
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 8px;
+    background-color: #0b1120;
+    border: 1px solid #3B82F6;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}

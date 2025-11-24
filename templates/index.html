@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Interview Preparation Partner - Voice</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+    <div class="app">
+        <header class="app-header">
+            <h1>Interview Preparation Partner</h1>
+            <p>Voice-based mock interview assistant</p>
+        </header>
+
+        <section class="toolbar">
+            <label for="role-select">Role:</label>
+            <select id="role-select">
+                <option value="software engineer">Software Engineer</option>
+                <option value="data analyst">Data Analyst</option>
+                <option value="product manager">Product Manager</option>
+                <option value="sales representative">Sales Representative</option>
+                <option value="retail associate">Retail Associate</option>
+            </select>
+
+            <div class="buttons">
+                <button id="voice-toggle-btn">Start Continuous Mode</button>
+                <button id="request-feedback-btn" class="secondary">Get Final Feedback</button>
+            </div>
+        </section>
+
+        <section class="mic-row">
+            <div class="mic-status">
+                <div id="mic-indicator" class="mic-indicator"></div>
+                <span id="mic-text">Idle</span>
+            </div>
+            <p class="hint">
+                Wait for the interviewer to finish speaking, then hold <strong>Spacebar</strong> to answer.
+            </p>
+        </section>
+
+        <section id="feedback-panel" class="feedback-panel" style="display:none;">
+            <div class="feedback-header">
+                <h2>Interview Feedback</h2>
+                <button id="hide-feedback-btn" class="secondary small">Close</button>
+            </div>
+            <div id="feedback" class="feedback-body"></div>
+        </section>
+
+        <main class="main-panel">
+            <div id="captions" class="captions-box"></div>
+        </main>
+    </div>
+
+    <script src="/static/voice.js"></script>
+</body>
+</html>
