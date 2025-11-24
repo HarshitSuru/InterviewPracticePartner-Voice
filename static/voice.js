@@ -3,7 +3,7 @@ let recognition;
 let messages = [];
 let lastQuestionText = "";
 let silenceTimer = null;
-let feedbackActive = false;  // true only when we explicitly request final feedback
+let feedbackActive = false;
 let pendingTranscript = "";
 let agentSpeaking = false;
 let userSpeaking = false;
@@ -15,9 +15,7 @@ const feedbackPanel = document.getElementById("feedback-panel");
 const micIndicator = document.getElementById("mic-indicator");
 const micText = document.getElementById("mic-text");
 
-// --- Mic status helpers ---
 function setMicState(state) {
-  // state: "idle" | "listening" | "agent"
   micIndicator.classList.remove("listening", "agent-speaking");
   if (state === "idle") {
     micText.textContent = "Idle";
@@ -38,7 +36,6 @@ if (hideFeedbackBtn) {
   };
 }
 
-// --- Speech Recognition setup ---
 if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
   recognition = new SR();
@@ -47,14 +44,12 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   recognition.lang = "en-US";
 
   recognition.onresult = (e) => {
-    // Buffer the latest utterance
     pendingTranscript = e.results[e.results.length - 1][0].transcript;
   };
 
   recognition.onend = () => {
     setMicState("idle");
     userSpeaking = false;
-    // When recognition stops (Space released or pause), send buffered text once
     if (pendingTranscript && pendingTranscript.trim().length > 0) {
       sendVoice(pendingTranscript.trim());
       pendingTranscript = "";
@@ -65,10 +60,8 @@ if ("webkitSpeechRecognition" in window || "SpeechRecognition" in window) {
   console.warn("SpeechRecognition not supported in this browser.");
 }
 
-// --- Buttons ---
 
 document.getElementById("voice-toggle-btn").onclick = () => {
-  // Don't start continuous listening while agent is speaking
   if (!voiceMode && agentSpeaking) {
     return;
   }
@@ -84,13 +77,11 @@ document.getElementById("voice-toggle-btn").onclick = () => {
   }
 };
 
-// Push-to-talk with SPACEBAR
 let spacePressed = false;
 window.addEventListener("keydown", (e) => {
   if (e.code === "Space" && !spacePressed) {
     spacePressed = true;
     e.preventDefault();
-    // Do not allow user push-to-talk while agent is speaking
     if (agentSpeaking) return;
     if (recognition) {
       voiceMode = false; // disable continuous while using PTT
@@ -99,7 +90,6 @@ window.addEventListener("keydown", (e) => {
       clearSilenceTimer();
       recognition.start();
       setMicState("listening");
-      // Keep last agent question caption visible while user speaks
     }
   }
 });
@@ -110,17 +100,14 @@ window.addEventListener("keyup", (e) => {
     e.preventDefault();
     if (recognition) {
       recognition.stop();
-      // mic state & sendVoice handled in onend
     }
   }
 });
 
-// Request final feedback only when this button is clicked
 document.getElementById("request-feedback-btn").onclick = () => {
   requestFinalFeedback();
 };
 
-// --- Caption handling (agent only, with fade/slide) ---
 
 let captionTimer = null;
 
@@ -137,21 +124,18 @@ function showCaptionImmediate(text) {
       captions.style.opacity = 0;
       captions.style.transform = "translateY(-10px)";
     }
-  }, 15000); // 15 seconds
+  }, 35000); // 15 seconds
 }
 
-// --- Silence handling (20 seconds) ---
 
 function startSilenceTimer() {
   clearSilenceTimer();
   silenceTimer = setTimeout(() => {
     if (lastQuestionText && !userSpeaking && !agentSpeaking) {
-      // Repeat the last question WITHOUT asking the model again
       speakWithCaptions(lastQuestionText);
-      // Restart timer for next silence period
       startSilenceTimer();
     }
-  }, 20000); // 20 seconds
+  }, 35000); // 35 seconds
 }
 
 function clearSilenceTimer() {
@@ -161,16 +145,13 @@ function clearSilenceTimer() {
   }
 }
 
-// --- TTS with word-synced captions ---
 
 function speakWithCaptions(text) {
-  // Cancel any ongoing speech
   window.speechSynthesis.cancel();
 
   const utter = new SpeechSynthesisUtterance(text);
   utter.lang = "en-US";
 
-  // Reset captions immediately
   captions.innerText = "";
   captions.style.opacity = 1;
   captions.style.transform = "translateY(0px)";
@@ -199,24 +180,21 @@ function speakWithCaptions(text) {
   utter.onend = () => {
     agentSpeaking = false;
     setMicState("idle");
-    // After entire sentence completes, keep caption for 15 seconds,
-    // but don't fade if user starts speaking
+
     if (captionTimer) clearTimeout(captionTimer);
     captionTimer = setTimeout(() => {
       if (!userSpeaking && !agentSpeaking) {
         captions.style.opacity = 0;
         captions.style.transform = "translateY(-10px)";
       }
-    }, 15000);
+    }, 35000);
   };
 
   window.speechSynthesis.speak(utter);
 }
 
-// --- Sending user speech to backend (normal interview messages) ---
 
 async function sendVoice(userText) {
-  // Any user answer cancels silence timer
   clearSilenceTimer();
 
   messages.push({ role: "user", content: userText });
@@ -242,15 +220,12 @@ async function sendVoice(userText) {
     messages.push({ role: "assistant", content: reply });
 
     if (feedbackActive) {
-      // This reply is the final feedback; show in inline panel only, no TTS
       feedback.innerHTML = reply.replace(/\n/g, "<br>");
       feedbackPanel.style.display = "block";
       feedbackActive = false; // reset
     } else {
-      // Normal interview question / follow-up
       lastQuestionText = reply;
       speakWithCaptions(reply);
-      // After agent speaks, start silence timer waiting for the user's answer
       startSilenceTimer();
     }
   } catch (err) {
@@ -258,7 +233,6 @@ async function sendVoice(userText) {
   }
 }
 
-// --- Requesting final feedback (button click) ---
 
 async function requestFinalFeedback() {
   clearSilenceTimer();
@@ -290,7 +264,6 @@ async function requestFinalFeedback() {
     const reply = data.reply || "";
     messages.push({ role: "assistant", content: reply });
 
-    // Show feedback in inline panel, do NOT speak it
     feedback.innerHTML = reply.replace(/\n/g, "<br>");
     feedbackPanel.style.display = "block";
     feedbackActive = false;
