@@ -49,7 +49,7 @@ The interviewer adapts to 4 user types required by the assignment:
 
 ![Design](image.png)
 
-
+## Design reasons
 I designed the system to feel like a real interview, not a chatbot. Everything revolves around **speech**, **timing**, and **clear turn-taking**.
 
 ### **1. Voice-first UI**
