@@ -1,5 +1,5 @@
 
-# 🎤 Interview Preparation Partner – Voice-Based AI Agent
+#  Interview Preparation Partner – Voice-Based AI Agent
 
 This project is built as part of the **Eightfold.ai – AI Agent Building Assignment**.  
 The goal is to create a **voice-first mock interview partner** that behaves like a real interviewer — asking role-specific questions, speaking naturally, listening to your voice, adapting to different user personas, and finally providing structured feedback when requested.
@@ -8,30 +8,30 @@ Everything has been designed so the interview feels smooth, interactive, and rea
 
 ---
 
-# 🚀 Features
+#  Features
 
-### 🎧 Voice-First Conversational Experience
+###  Voice-First Conversational Experience
 - Hold **Spacebar** to talk (push-to-talk).
 - Browser handles:
   - **STT**: Speech → Text for user answers  
   - **TTS**: Text → Speech for interviewer questions  
 - No external paid speech APIs required.
 
-### 🎙 Natural Interview Flow
+###  Natural Interview Flow
 - Interview starts immediately when you greet the agent (“hello”).
 - Short, clear, one-at-a-time questions.
 - Follow-ups based on your actual answer.
 - If you answer a different project than the one asked → the agent smoothly shifts to that topic.
 - If you remain silent → question is repeated automatically.
 
-### 💬 Adaptive to User Personas
+###  Adaptive to User Personas
 The interviewer adapts to 4 user types required by the assignment:
 - **Confused User** – helps them choose a topic, simplifies questions  
 - **Efficient User** – short, direct questions, fast pace  
 - **Chatty User** – politely refocuses them when they go off-topic  
 - **Edge-Case User** – gracefully refuses unsafe/off-topic queries and redirects  
 
-### 📝 Final Feedback (On-Demand)
+###  Final Feedback (On-Demand)
 - Feedback is **not** given after every answer.  
 - Only when the user clicks **“Get Final Feedback”**.
 - Includes structured scoring:
@@ -45,7 +45,7 @@ The interviewer adapts to 4 user types required by the assignment:
 
 ---
 
-# 🧩 System Design (Simple, Human Style)
+#  System Design 
 
 ![Design](image.png)
 
@@ -112,7 +112,7 @@ It never interrupts the interview flow.
 
 ---
 
-# 🔄 Data Flow
+#  Data Flow
 
 ### **Frontend → Backend**
 Triggered when:
@@ -127,7 +127,7 @@ Triggered when:
 }
 
 
-# 🔄 Data Flow
+#  Data Flow
 Frontend → Backend:
 - Triggered when user releases Spacebar or requests final feedback.
 
@@ -142,7 +142,7 @@ Frontend:
 
 ---
 
-# 🧪 Demo Personas
+#  Demo Personas
 - Confused user  
 - Efficient user  
 - Chatty user  
@@ -150,7 +150,7 @@ Frontend:
 
 ---
 
-# 🛠 Setup
+#  Setup
 ```bash
 python -m venv .venv
 .venv\Scripts\activate
@@ -174,5 +174,5 @@ http://localhost:5000
 
 ---
 
-# 🎉 Done!
-This README explains architecture, design, flow, personas, and setup.
+  
+# This README explains architecture, design, flow, personas, and setup.
